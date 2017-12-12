@@ -215,7 +215,6 @@ Some other correct examples are:
 
 </p>
 
-Some incorrect examples are:
 
 
 
