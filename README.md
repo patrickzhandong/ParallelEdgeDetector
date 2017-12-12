@@ -1,4 +1,5 @@
-<img src="https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/title.jpeg">
+
+<img src="/title.jpeg">
 
 ## A 418 Final Project by Junye(Hans) Chen and Zhan(Patrick) Dong
 
