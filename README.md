@@ -1,6 +1,5 @@
 <img src="https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/title.jpeg">
 
-# Parallel License Plate Recognition
 ## A 418 Final Project by Junye(Hans) Chen and Zhan(Patrick) Dong
 
 
