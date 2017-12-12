@@ -1,4 +1,8 @@
-## A 418 Final Project by Junye(Hans) Chen and Zhan(Patrick) Dong
+### Parallel License Plate Recognition
+<img src="https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/title.jpeg">
+### A 418 Final Project by Junye(Hans) Chen and Zhan(Patrick) Dong
+
+
 
 [Proposal](https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/proposal.pdf)
 [Checkpoint](https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/CheckpointReport.pdf)
