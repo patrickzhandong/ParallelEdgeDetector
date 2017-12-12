@@ -1,5 +1,5 @@
 
-<img src="/title.jpeg">
+<img src="ParallelPlateRecoginition/title.jpeg">
 
 ## A 418 Final Project by Junye(Hans) Chen and Zhan(Patrick) Dong
 
