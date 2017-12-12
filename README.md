@@ -4,10 +4,14 @@
 
 ## A 418 Final Project by Junye(Hans) Chen and Zhan(Patrick) Dong
 
+### Reports
+______
 
+##### [Proposal](https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/proposal.pdf)
 
-[Proposal](https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/proposal.pdf)
-[Checkpoint](https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/CheckpointReport.pdf)
+##### [Checkpoint](https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/CheckpointReport.pdf)
+
+##### [Final Report](https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/final_report.pdf)
 
 ### Summary
 
@@ -26,7 +30,7 @@ ______
 In this project, we implement our program from scratch based on the algorithm from the paper written by Mahesh Babu K and M V Raghunadh[1]. We implement a multi-step algorithm involving many classical image processing algorithms, and use our own ideas to do the parallelization for each step. The general process of our program is shown in the flow chart below:
 
 <p align="center">
-  <img height="350" src="https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/program1%20(1).jpg" />
+  <img src="http://i64.tinypic.com/2pq572h.jpg" />
 
 </p>
 
@@ -50,13 +54,30 @@ Our entire program consists of several steps, and we parallelize each step to en
 
 #### Preprocess
 
-After taking a PNG image as input, we apply our grayscale ingredient on every pixel of the image, and make it into an array of type unsigned char. We obtained our sequential code for preprocessing from the sample code of libpng[2]. We parallelize preprocessing using CUDA, by assigning each pixel to a CUDA thread. We copy the information from PNG file to the global memory of the device. In the kernel, we apply the ingredient to the current RGB values.
+After taking a PNG image as input, we apply our grayscale ingredient on every pixel of the image, and make it into an array of type unsigned char. We obtained our sequential code for preprocessing from the sample code of libpng.
+<p align="center">
+  <img height="350" src="http://i65.tinypic.com/2hoac0m.jpg" />
+
+</p>
+
+We parallelize preprocessing using CUDA, by assigning each pixel to a CUDA thread. We copy the information from PNG file to the global memory of the device. In the kernel, we apply the ingredient to the current RGB values.
 
 #### Edge Detection
 
 In this program, we use Sobel operator to do edge detection. The method involves applying two 3 x 3 kernel that are convolved with the original image. The idea behind Sobel edge detection is to use two kernels to detect the sharp horizontal and vertical gradient.
 
+<p align="center">
+  <img  src="http://i65.tinypic.com/25887cp.jpg" />
+
+</p>
+
+
 Once we get the two results after applying two kernels at one pixel, we compute  and assign it to the current pixel. This process helps to highlight the sharp gradient in an image, and specifically help to highlight the position of the license plate in our project, because there is usually strong contrast between the license plate and nearby regions. This step may seem trivial at the beginning, but in order to obtain good result, we need to normalize the image after convolution, which involves finding the maximum and minimum pixel value in the whole image. Therefore, we need to use two CUDA kernels to achieve this, where the first one is to find the maximum and minimum pixel values after convolution, and the second one is to apply normalization to each pixel value.
+
+<p align="center">
+  <img  src="http://i67.tinypic.com/125hxtg.jpg" />
+
+</p>
 
 Since CUDA divides the image into blocks, and communication between blocks is rather expensive, we use shared maximum and minimum variables within each block. Each block finds its local minimum and maximum pixel values, and then the first pixel within each block updates the global maximum and minimum pixel values among the whole image. All the updates are achieved through CUDA atomic operations, so no updates will be lost. We observe that the Sobel operator works extremely well for greyscale images. 
 
@@ -82,10 +103,20 @@ The general idea for these kernels is the same: we break the entire image into b
 #### Dilation
 
 To turn the plate region into a single connected component, our next step is to apply dilation on the edge graph. The basic idea of dilation is very simple. By applying an x radius and a y radius, each pixel will check its neighbors in the  matrix that centers at the pixel. If any of the neighbors is a foreground pixel, the pixel itself will also become a foreground pixel. 
+<p align="center">
+  <img  src="http://i65.tinypic.com/anc1np.jpg" />
+
+</p>
 
 The structuring element we use in this program is based on the width and height of the image, but also have a lower bound. a structure element of 4 x 8 works for many of the images.
 
+<p align="center">
+  <img  src="http://i67.tinypic.com/34pkolw.jpg" />
+
+</p>
 After the dilation, we can observe that the edges in the graph swallow, and form into larger connected components. Among them, the plate region is very unique, since it has a rectangle shape, and is isolated from other connected components. This provides the features we need for segmentation and identification of regions.
+
+
 We again use CUDA to parallelize this step. we create a new array on device to save the result image. We cannot directly change the original image, since the results of each pixel have dependencies on the old values of the graph. Our graph will be different given the order of pixels we process if we directly change the values. Then we run CUDA with a large amount of threads, where each thread takes care of a pixel. In the thread, we look at the neighbor elements to see if there is a foreground pixel. If we find one, we change the value in the new image and terminate the thread. Finally, we copy the new image back. The parallelism for dilation is not optimal, since it involves memory copy and other time-consuming operations. However, we have to do so to ensure the correctness of the step.
 
 #### Segmentation
@@ -132,6 +163,52 @@ We test our solution on a total of ten images, and the results are listed in the
 #### Speed
 
 We observe significant speedup of our CUDA implementation against our sequential CPU implementation. We use built-in clock function for all the timing data, and here are the data on three different input image sizes:
+
+<p align="center">
+  <img  src="http://i64.tinypic.com/b4bxuc.jpg" />
+
+</p>
+
+
+<p align="center">
+  <img  src="http://i64.tinypic.com/psvw3.jpg" />
+
+</p>
+
+<p align="center">
+  <img  src="http://i63.tinypic.com/73mb7m.jpg" />
+
+</p>
+
+For the sequential code run on CPU, we have
+
+<p align="center">
+  <img  src="http://i67.tinypic.com/14l3m6r.jpg" />
+
+</p>
+
+The following is the total CUDA GPU implementation runtime vs problem size. 
+
+<p align="center">
+  <img  src="http://i65.tinypic.com/241nw9x.jpg" />
+
+</p>
+
+We can see the runtime increases approximately linearly with the problem size. When problem size is 500000, runtime is approximately 50ms, and it increases to approximately 100ms when problem size is doubled to 100000. The linear scale makes sense because our parallel solution essentially reduces a O(n2) complexity down to O(n) (n is defined as width or height), because we apply blocking on the image. The only non-parallel step is edge resolution, where we only check the edges that have label conflicts, but the runtime of that is scaled approximately linearly with input size.
+
+<p align="center">
+  <img  src="http://i63.tinypic.com/2gsnbdi.jpg" />
+
+</p>
+
+The last graph is the relative speedup of our CUDA implementation vs CPU implementation. We can see as problem size increases, the speedup significantly increases. This further confirms that our parallel solution successfully reduces the problem size. With input size 1452x1205, our solution achieves 255x speedup vs the CPU implementation, where we can clearly see the potentials of the parallelization techniques.
+
+
+
+
+
+
+
 
 #### Limitations
 
