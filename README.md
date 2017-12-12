@@ -4,6 +4,12 @@
 
 ## A 418 Final Project by Junye(Hans) Chen and Zhan(Patrick) Dong
 
+### Source Code
+______
+
+#### [Github](https://github.com/patrickzhandong/ParallelPlateRecoginition/tree/master/LicensePlateNumberRecognition)
+
+
 ### Reports
 ______
 
@@ -12,6 +18,28 @@ ______
 ##### [Checkpoint](https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/CheckpointReport.pdf)
 
 ##### [Final Report](https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/final_report.pdf)
+
+
+### Schedule
+
+______
+
+Nov.8 - Nov.12: Start the program. Study the algorithms (Completed)
+
+Nov.13 - Nov.19: Implement the sequential version for preprocessing, sobel and segmentation. (Completed)
+
+Nov.20 - Nov. 23: Continue working on the implementation for character segmentation, improve its accuracy. start working on dilation and plate location recognition (Completed) 
+
+Nov.24 - Nov. 26: Start parallelizing edge detection.Continue working on plate location recognition. Start parallelizing the preprocessing step.(Completed)
+
+Nov.27 - Nov. 30: Continue working on parallelizing edge detection.Continue parallelizing the preprocessing step. (Completed)
+
+Dec.1 - Dec. 3: Start parallelizing the segmentation step.Continue parallelizing the segmentation step.Tuning the parameters for filtering (Completed)
+
+Dec.4 - Dec.7:Continue working on the work undone. Start doing the speed tests.(Completed)
+
+Dec.8 - Dec.12: Wrap up the algorithm. Do the rest speed tests.Write the Report.(Completed)
+
 
 (The rest is a excerpt from the final report. For more information, please read the final report provided above)
 
@@ -284,17 +312,6 @@ Zhai, Xiaojun, et al. “License plate localisation based on morphological opera
 
 
 
-# Schedule
-Nov.20 - Nov. 23: Continue working on the implementation for character segmentation, improve its accuracy. Working on the minor steps after edge detection to find the plate region. 
 
-Nov.24 - Nov. 26: Working on character recognition with existing library, start parallelizing edge detection.Continue working on the minor steps. Start parallelizing the preprocessing step.
-
-Nov.27 - Nov. 30: Continue working on parallelizing edge detection.Continue parallelizing the preprocessing step.
-
-Dec.1 - Dec. 3: Start parallelizing the segmentation step.Continue parallelizing the segmentation step.Trying different preprocessing techniques to improve the accuracy. Start working on character recognition (If have time).
-
-Dec.4 - Dec.7:Continue working on the work undone.Working  on character recognition(If have time).
-
-Dec.8 - Dec.12: Wrap up the algorithm.Do the speed tests.Write the Report.
 
 
