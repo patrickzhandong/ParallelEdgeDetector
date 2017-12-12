@@ -13,6 +13,8 @@ ______
 
 ##### [Final Report](https://github.com/patrickzhandong/ParallelPlateRecoginition/blob/master/final_report.pdf)
 
+(The rest is a excerpt from the final report. For more information, please read the final report provided above)
+
 ### Summary
 
 ______
@@ -136,8 +138,13 @@ After finding all the connected components in the image, we need to filter out t
 We apply filtering twice. We first use it to find the plate region among all the connected components in the original image. We notice that the plate is normally a rectangle region, where the height of the rectangle a lot smaller than the width of the rectangle. Besides, since it is a relatively small part of the car, and its size is also bounded. We use the width-height ratio constraint to eliminate regions that have similar size, but of a different shape. We use the size constraint to eliminate regions that have a reasonable shape, but is either too small (noises in the image) or too big. 
 Then we apply filtering to find character segments on the plate. We also have size and width-height ratio constraint, so that we can get rid of the confusing features on the plate, and only focus on the actual character segments. 
 
+<p align="center">
+  <img  src="http://i67.tinypic.com/eafeif.jpg" />
 
-We spend a long time tuning the parameters for both filtering steps, so that plates from most of the images fit into the region, and any unqualified regions can be eliminated. This is quite necessary for the general speed of the algorithm, since whenever we detect a potential region, we use our segmentation technique to find character segments. If we have to do character segmentation on all the connected components, it will be a huge waste of time.
+</p>
+
+
+We spend a long time tuning the parameters for both filtering steps, so that plates from most of the images fit into the region, and any unqualified regions can be eliminated. This is quite necessary for the general speed of the algorithm, since whenever we detect a potential region, we use our segmentation technique to find character segments. If we have to do character segmentation on all the connected components, it will be a huge waste of time
 
 ### Result
 ____
@@ -159,6 +166,30 @@ We test our solution on a total of ten images, and the results are listed in the
 | Absolutely Correct                                                                 | 7               |
 | Successful Detection of Plate Region,  but Incorrect Number of Segments Identified | 2               |
 | Failed to DetectPlate Region                                                       | 1               |
+
+A successful process of finding the region is:
+
+<p align="center">
+  <img  src="http://i68.tinypic.com/3326ywk.jpg" />
+
+</p>
+
+Some other correct examples are:
+
+
+<p align="center">
+  <img  src="http://i63.tinypic.com/2qir0y9.jpg" />
+
+</p>
+
+<p align="center">
+  <img  src="http://i65.tinypic.com/9r39zl.jpg" />
+
+</p>
+
+Some incorrect examples are:
+
+
 
 #### Speed
 
